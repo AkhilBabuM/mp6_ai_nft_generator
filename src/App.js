@@ -63,15 +63,15 @@ function App() {
   const createImage = async () => {
     setMessage("Generating Image...")
 
-    // You can replace this with different model API's
-    const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`
+    
+    const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1`
 
-    // Send the request
+    console.log('Starting response')
     const response = await axios({
       url: URL,
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}`,
+        Authorization: `Bearer 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`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -80,6 +80,8 @@ function App() {
       }),
       responseType: 'arraybuffer',
     })
+
+    console.log('Received response')
 
     const type = response.headers['content-type']
     const data = response.data
@@ -95,7 +97,7 @@ function App() {
     setMessage("Uploading Image...")
 
     // Create instance to NFT.Storage
-    const nftstorage = new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE_API_KEY })
+    const nftstorage = new NFTStorage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE2RkI0NDc5QUVEMDU3RTA5MUMyM0VhRjE5RTdjYWQyMjFEZTZlMmMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY4MTIzNjE2MTQ5MiwibmFtZSI6Im5mdHN0b3JhZ2UifQ.nzL-gbeL_9VZymTjM5Oz2xpGoqsUc9FMnLGxKvfnapQ' })
 
     // Send request to store image
     const { ipnft } = await nftstorage.store({
@@ -124,7 +126,7 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div style={{backgroundColor:'grey', height:'100vh'}}>
       <Navigation account={account} setAccount={setAccount} />
 
       <div className='form'>
@@ -134,7 +136,7 @@ function App() {
           <input type="submit" value="Create & Mint" />
         </form>
 
-        <div className="image">
+        <div  style={{backgroundColor: 'white'}}className="image">
           {!isWaiting && image ? (
             <img src={image} alt="AI generated image" />
           ) : isWaiting ? (
